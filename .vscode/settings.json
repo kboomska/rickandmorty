@@ -1,0 +1,38 @@
+{
+  "[dart]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.links": true,
+    "editor.rulers": [
+      80
+    ]
+  },
+  "dart.lineLength": 80,
+  "search.exclude": {
+    "**/.fvm": true,
+    ".dart_tool": true,
+    "coverage": true,
+    "build": true
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true,
+    ".dart_tool": true,
+    "coverage": true,
+    "build": true
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.showDeprecated": false,
+  "explorer.compactFolders": false,
+  "explorer.copyRelativePathSeparator": "/",
+  "workbench.startupEditor": "none",
+  "editor.unicodeHighlight.allowedLocales": {
+    "ru": true
+  },
+  "git.openRepositoryInParentFolders": "always",
+  "files.associations": {
+    "*.drift": "sql"
+  },
+  "cSpell.ignorePaths": [
+    "**/.gitignore"
+  ]
+}
