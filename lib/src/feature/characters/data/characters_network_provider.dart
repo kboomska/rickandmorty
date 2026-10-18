@@ -6,7 +6,7 @@ import 'package:rickandmorty/src/feature/characters/model/characters_response.da
 /// Источник данных персонажей.
 abstract interface class CharactersDataProvider {
   /// Получение персонажей из источника данных.
-  Future<CharactersResponse> getCharacters();
+  Future<CharactersResponse> getCharacters(int page);
 }
 
 /// {@template characters_network_provider}
@@ -30,9 +30,9 @@ final class CharactersNetworkProvider implements CharactersDataProvider {
 
   /// Загрузка персонажей из сети.
   @override
-  Future<CharactersResponse> getCharacters() async {
+  Future<CharactersResponse> getCharacters(int page) async {
     final response = await client
-        .get(Uri.parse('$baseUrl/character'))
+        .get(Uri.parse('$baseUrl/character/?page=$page'))
         .timeout(_timeLimit);
 
     if (response.statusCode == 200) {

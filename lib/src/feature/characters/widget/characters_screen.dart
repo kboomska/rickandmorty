@@ -12,16 +12,21 @@ class CharactersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = CharactersProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(title: Text('Characters')),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: ValueListenableBuilder(
-        valueListenable: CharactersProvider.of(context).state,
+        valueListenable: controller.state,
         builder: (context, state, _) {
+          final empty = !controller.hasCharacters;
           return switch (state) {
-            CharactersState.loading => const _CharactersScreen$Loading(),
-            CharactersState.idle => const _CharactersScreen$Idle(),
+            CharactersState.loading when empty =>
+              const _CharactersScreen$Loading(),
+            CharactersState.idle when empty => const _CharactersScreen$Empty(),
             CharactersState.error => const _CharactersScreen$Error(),
+            _ => const CharacterList(),
           };
         },
       ),
@@ -29,36 +34,23 @@ class CharactersScreen extends StatelessWidget {
   }
 }
 
-/// {@template _character_screen_idle}
-/// Виджет состояния ожидания (покоя) для экрана [CharactersScreen].
+/// {@template _character_screen_empty}
+/// Виджет состояния отсутствия персонажей на экране [CharactersScreen].
 /// {@endtemplate}
-class _CharactersScreen$Idle extends StatelessWidget {
-  /// {@macro _character_screen_idle}
-  const _CharactersScreen$Idle();
+class _CharactersScreen$Empty extends StatelessWidget {
+  /// {@macro _character_screen_empty}
+  const _CharactersScreen$Empty();
 
   @override
   Widget build(BuildContext context) {
-    final controller = CharactersProvider.of(context);
-
-    return ValueListenableBuilder(
-      valueListenable: controller.state,
-      builder: (context, state, child) {
-        return controller.hasCharacters
-            // Список персонажей.
-            ? child!
-            // Текст уведомления пользователя об отсутствии персонажей.
-            : Center(
-                child: Text(
-                  'No characters',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                ),
-              );
-      },
-      child: const CharacterList(),
+    return Center(
+      child: Text(
+        'No characters',
+        style: Theme.of(context).textTheme.bodyLarge
+            ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+        textAlign: TextAlign.center,
+        maxLines: 2,
+      ),
     );
   }
 }

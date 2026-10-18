@@ -19,6 +19,7 @@ class CharacterList extends StatelessWidget {
         final characters = controller.characters;
 
         return ListView.builder(
+          controller: controller.scrollController,
           itemCount: characters.length,
           itemBuilder: (context, index) {
             final isFirst = index == 0;

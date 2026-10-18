@@ -4,7 +4,7 @@ import 'package:rickandmorty/src/feature/characters/model/characters_response.da
 /// Репозиторий доступа к данным персонажей.
 abstract interface class CharactersRepository {
   /// Получение персонажей из источника данных.
-  Future<CharactersResponse> getCharacters();
+  Future<CharactersResponse> getCharacters(int page);
 }
 
 /// {@template characters_repository_impl}
@@ -19,5 +19,6 @@ final class CharactersRepositoryImpl implements CharactersRepository {
 
   /// Получение персонажей.
   @override
-  Future<CharactersResponse> getCharacters() => dataProvider.getCharacters();
+  Future<CharactersResponse> getCharacters(int page) =>
+      dataProvider.getCharacters(page);
 }

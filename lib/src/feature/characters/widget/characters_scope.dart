@@ -25,18 +25,39 @@ class CharactersScope extends StatefulWidget {
 }
 
 class _CharactersScopeState extends State<CharactersScope> {
+  // Контроллер прокрутки экрана персонажей.
+  late final ScrollController scrollController;
+
   // Контроллер управления загрузкой персонажей.
   late final CharactersController controller;
 
   @override
   void initState() {
-    controller = CharactersController(repository: widget.repository);
+    scrollController = ScrollController();
+    controller = CharactersController(
+      repository: widget.repository,
+      scrollController: scrollController,
+    );
+    scrollController.addListener(controller.onScrollChanged);
     super.initState();
+  }
+
+  /// Отслеживание изменения прокрутки списка персонажей.
+  Future<void> scrollListener() async {
+    // Использование метода addPostFrameCallback позволяет избежать ошибок вызова обновления
+    // виджета до завершения текущей его отрисовки.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (mounted) {
+        await controller.onScrollChanged();
+      }
+    });
   }
 
   @override
   void dispose() {
+    scrollController.removeListener(controller.onScrollChanged);
     controller.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -44,7 +65,7 @@ class _CharactersScopeState extends State<CharactersScope> {
   Widget build(BuildContext context) {
     return CharactersProvider(
       // Передаем контроллер и сразу загружаем список персонажей.
-      controller: controller..load(),
+      controller: controller..load(1),
       child: widget.child,
     );
   }
