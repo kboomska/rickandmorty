@@ -40,11 +40,18 @@ jobs:
 
             - name: Build web application
               env:
+                  BASE_URL: ${{ vars.BASE_URL }}
                   REPOSITORY_NAME: ${{ github.event.repository.name }}
-              run: >
-                  flutter build web
-                  --release
-                  --base-href "/${REPOSITORY_NAME}/"
+              run: |
+                  if [ -z "$BASE_URL" ]; then
+                    echo "::error::Set the BASE_URL repository variable in GitHub Actions settings."
+                    exit 1
+                  fi
+
+                  flutter build web \
+                    --release \
+                    --base-href "/${REPOSITORY_NAME}/" \
+                    --dart-define="BASE_URL=${BASE_URL}"
 
             - name: Upload web artifact
               uses: actions/upload-pages-artifact@v4

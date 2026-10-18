@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rickandmorty/src/feature/app/widget/material_context.dart';
+import 'package:http/http.dart' as http;
+import 'package:rickandmorty/src/feature/app/widget/app.dart';
+import 'package:rickandmorty/src/feature/characters/data/characters_network_provider.dart';
+import 'package:rickandmorty/src/feature/characters/data/characters_repository.dart';
 
 /// {@template app_runner}
 /// [AppRunner] отвечает за инициализацию и запуск приложения.
@@ -14,10 +17,18 @@ final class AppRunner {
     // Удерживаем нативную заставку (splash screen).
     binding.deferFirstFrame();
 
-    // TODO: Добавить инициализацию зависимостей.
+    // Инициализация зависимостей.
+    // В данном примере имеется только одна зависимость в виде репозитория
+    // доступа к данным персонажей. Вместо общего Dependencies передаем
+    // данный репозиторий напрямую.
+    final charactersRepository = CharactersRepositoryImpl(
+      dataProvider: CharactersNetworkProvider(
+        client: http.Client(),
+        baseUrl: const String.fromEnvironment('BASE_URL'),
+      ),
+    );
 
-    // Корневой виджет приложения.
-    runApp(const MaterialContext());
+    runApp(App(repository: charactersRepository));
 
     // Закрываем заставку (splash screen) и отображаем экран приложения.
     binding.allowFirstFrame();
