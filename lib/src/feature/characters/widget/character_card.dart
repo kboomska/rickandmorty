@@ -28,43 +28,54 @@ class CharacterCard extends StatelessWidget {
           crossAxisAlignment: .start,
           children: [
             // Изображение персонажа.
-            const Placeholder(fallbackHeight: 80, fallbackWidth: 80),
+            Image.network(
+              character.image,
+              height: 80,
+              width: 80,
+              errorBuilder: (_, _, _) => Image.asset(
+                "assets/images/empty.webp",
+                width: 80,
+                height: 80,
+              ),
+            ),
             const SizedBox.square(dimension: 16),
             // Данные персонажа.
-            Column(
-              mainAxisSize: .min,
-              mainAxisAlignment: .start,
-              crossAxisAlignment: .start,
-              children: [
-                Flexible(
-                  child: Text(
-                    character.name,
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      color: theme.colorScheme.onPrimary,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 1,
-                    ),
+            Flexible(
+              child: Column(
+                mainAxisSize: .min,
+                mainAxisAlignment: .start,
+                crossAxisAlignment: .start,
+                children: [
+                  Flexible(
                     child: Text(
-                      character.status.name.toUpperCase(),
-                      style: theme.textTheme.labelMedium?.copyWith(
+                      character.name,
+                      style: theme.textTheme.titleLarge?.copyWith(
                         color: theme.colorScheme.onPrimary,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 1,
+                      ),
+                      child: Text(
+                        character.status.name.toUpperCase(),
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: theme.colorScheme.onPrimary,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

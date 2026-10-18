@@ -77,8 +77,8 @@ class _CharactersScreen$Loading extends StatelessWidget {
         dimension: 40,
         child: RepaintBoundary(
           child: CircularProgressIndicator(
-            color: Theme.of(context).primaryColor,
-            strokeWidth: 2,
+            color: Theme.of(context).colorScheme.secondary,
+            strokeWidth: 4,
           ),
         ),
       ),
