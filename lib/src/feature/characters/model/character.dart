@@ -1,3 +1,5 @@
+import 'package:rickandmorty/src/feature/characters/logic/character_status.dart';
+
 /// {@template character}
 /// Модель персонажа.
 /// {@endtemplate}
@@ -15,7 +17,7 @@ final class Character {
     return Character(
       id: json['id'] as int,
       name: json['name'] as String,
-      status: json['status'] as String,
+      status: CharacterStatus.byName(json['status'] as String),
       image: json['image'] as String,
     );
   }
@@ -27,7 +29,7 @@ final class Character {
   final String name;
 
   /// Статус персонажа.
-  final String status;
+  final CharacterStatus status;
 
   /// Url изображения персонажа.
   final String image;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/src/core/theme/color_scheme.dart';
 import 'package:rickandmorty/src/feature/characters/data/characters_repository.dart';
 import 'package:rickandmorty/src/feature/characters/widget/characters_scope.dart';
 import 'package:rickandmorty/src/feature/characters/widget/characters_screen.dart';
@@ -23,6 +24,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       key: _globalKey,
       debugShowCheckedModeBanner: false,
+      theme: Theme.of(context).copyWith(colorScheme: colorScheme),
       home: const CharactersScreen(),
       builder: (context, child) => MediaQuery.withClampedTextScaling(
         minScaleFactor: 1.0,

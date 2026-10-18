@@ -19,6 +19,9 @@ final class CharactersNetworkProvider implements CharactersDataProvider {
     required this.baseUrl,
   });
 
+  /// Ограничение на api-запрос, по истечении которого будет выброшена ошибка.
+  static const _timeLimit = Duration(minutes: 1);
+
   /// HTTP клиент.
   final http.Client client;
 
@@ -28,8 +31,9 @@ final class CharactersNetworkProvider implements CharactersDataProvider {
   /// Загрузка персонажей из сети.
   @override
   Future<CharactersResponse> getCharacters() async {
-    final response = await client.get(Uri.parse('$baseUrl/character'));
-    response.headers['content-type'] = 'application/json; charset=utf-8';
+    final response = await client
+        .get(Uri.parse('$baseUrl/character'))
+        .timeout(_timeLimit);
 
     if (response.statusCode == 200) {
       return CharactersResponse.fromJson(

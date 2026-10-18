@@ -19,6 +19,14 @@ final class CharactersController {
   /// Список загруженных персонажей.
   final List<Character> _characters = [];
 
+  /// Список загруженных персонажей.
+  ///
+  /// Внесение изменений в [characters] не влияет на исходный список.
+  List<Character> get characters => _characters.toList();
+
+  /// Наличие загруженных персонажей.
+  bool get hasCharacters => _characters.isNotEmpty;
+
   /// Загрузка персонажей.
   Future<void> load() async {
     // Игнорируем новую загрузку при выполнении текущей.
@@ -41,6 +49,9 @@ final class CharactersController {
       rethrow;
     }
   }
+
+  /// Повторная загрузка текущей страницы.
+  Future<void> reload() => load();
 
   /// Освобождение занимаемых ресурсов.
   void dispose() {
