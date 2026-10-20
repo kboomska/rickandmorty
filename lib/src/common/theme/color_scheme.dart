@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// The dark [ColorScheme].
+/// The app [ColorScheme].
 const colorScheme = ColorScheme.dark(
   surface: Color(0xFF026065),
   primary: Color(0xFF026065),

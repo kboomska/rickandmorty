@@ -9,6 +9,7 @@ import 'package:rickandmorty/src/feature/characters/model/character.dart';
 /// Контроллер управления загрузкой персонажей.
 /// {@endtemplate}
 final class CharactersController {
+  /// {@macro characters_controller}
   CharactersController({required this.repository})
     : state = ValueNotifier(CharactersState.idle);
 

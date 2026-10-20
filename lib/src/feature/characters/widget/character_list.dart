@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/src/common/widget/loading_indicator.dart';
+import 'package:rickandmorty/src/feature/character/widget/character_details_screen.dart';
 import 'package:rickandmorty/src/feature/characters/logic/characters_controller.dart';
-import 'package:rickandmorty/src/feature/characters/widget/character_card.dart';
+import 'package:rickandmorty/src/feature/characters/model/character.dart';
+import 'package:rickandmorty/src/feature/characters/widget/character_list_tile.dart';
 import 'package:rickandmorty/src/feature/characters/widget/characters_provider.dart';
 
 /// {@template characters_list}
@@ -42,6 +45,17 @@ class _CharacterListState extends State<CharacterList> {
     });
   }
 
+  /// Переход к экрану выбранного персонажа.
+  Future<void> moveToCharacter({
+    required BuildContext context,
+    required Character character,
+  }) => Navigator.push(
+    context,
+    MaterialPageRoute<void>(
+      builder: (context) => CharacterDetailsScreen(character: character),
+    ),
+  );
+
   @override
   void dispose() {
     scrollController.removeListener(scrollListener);
@@ -54,28 +68,26 @@ class _CharacterListState extends State<CharacterList> {
     return ValueListenableBuilder(
       valueListenable: controller.state,
       builder: (context, state, _) {
-        final characters = controller.characters;
+        final items = controller.characters.length;
 
         return ListView.builder(
           controller: scrollController,
-          itemCount: characters.length,
+          itemCount: items + (controller.hasMorePages ? 1 : 0),
           itemBuilder: (context, index) {
-            final isFirst = index == 0;
-            final isLast = index == characters.length - 1;
-            final character = characters[index];
+            final tiles = items - (controller.hasMorePages ? 0 : 1);
 
-            return Padding(
-              padding: EdgeInsets.only(
-                left: 16,
-                right: 16,
-                top: isFirst ? 16 : 8,
-                bottom: isLast ? 16 : 8,
-              ),
-              child: CharacterCard(
-                key: ValueKey(character.id),
-                character: character,
-              ),
-            );
+            return index < items
+                ? CharacterListTile(
+                    key: ValueKey(controller.characters[index].id),
+                    character: controller.characters[index],
+                    isFirst: index == 0,
+                    isLast: index == tiles,
+                    onTap: () => moveToCharacter(
+                      context: context,
+                      character: controller.characters[index],
+                    ),
+                  )
+                : const LoadingIndicator();
           },
         );
       },

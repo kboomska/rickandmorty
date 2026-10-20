@@ -24,8 +24,7 @@ class CharacterCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
-          mainAxisSize: .min,
-          crossAxisAlignment: .start,
+          crossAxisAlignment: .center,
           children: [
             // Изображение персонажа.
             Image.network(
@@ -34,27 +33,25 @@ class CharacterCard extends StatelessWidget {
               width: 80,
               errorBuilder: (_, _, _) => Image.asset(
                 "assets/images/empty.webp",
-                width: 80,
                 height: 80,
+                width: 80,
               ),
             ),
             const SizedBox.square(dimension: 16),
             // Данные персонажа.
             Flexible(
+              fit: .tight,
               child: Column(
-                mainAxisSize: .min,
                 mainAxisAlignment: .start,
                 crossAxisAlignment: .start,
                 children: [
-                  Flexible(
-                    child: Text(
-                      character.name,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        color: theme.colorScheme.onPrimary,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                  Text(
+                    character.name,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      color: theme.colorScheme.onPrimary,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8),
                   DecoratedBox(
@@ -68,7 +65,7 @@ class CharacterCard extends StatelessWidget {
                         vertical: 1,
                       ),
                       child: Text(
-                        character.status.name.toUpperCase(),
+                        character.status.upperName,
                         style: theme.textTheme.labelMedium?.copyWith(
                           color: theme.colorScheme.onPrimary,
                         ),
@@ -78,6 +75,7 @@ class CharacterCard extends StatelessWidget {
                 ],
               ),
             ),
+            Icon(Icons.arrow_forward_ios, color: theme.colorScheme.onPrimary),
           ],
         ),
       ),

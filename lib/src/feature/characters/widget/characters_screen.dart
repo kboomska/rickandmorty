@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/src/common/widget/loading_indicator.dart';
 import 'package:rickandmorty/src/feature/characters/logic/characters_state.dart';
 import 'package:rickandmorty/src/feature/characters/widget/character_list.dart';
 import 'package:rickandmorty/src/feature/characters/widget/characters_provider.dart';
 
 /// {@template characters_screen}
-/// Виджет экрана персонажей [CharactersScreen].
+/// Виджет экрана персонажей.
 /// {@endtemplate}
 class CharactersScreen extends StatelessWidget {
   /// {@macro characters_screen}
@@ -17,29 +18,30 @@ class CharactersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text('Characters')),
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: ValueListenableBuilder(
-        valueListenable: controller.state,
-        builder: (context, state, _) {
-          final empty = !controller.hasCharacters;
-          return switch (state) {
-            CharactersState.loading when empty =>
-              const _CharactersScreen$Loading(),
-            CharactersState.idle when empty => const _CharactersScreen$Empty(),
-            CharactersState.error => const _CharactersScreen$Error(),
-            _ => const CharacterList(),
-          };
-        },
+      body: SafeArea(
+        child: ValueListenableBuilder(
+          valueListenable: controller.state,
+          builder: (context, state, _) {
+            final empty = !controller.hasCharacters;
+            return switch (state) {
+              CharactersState.loading when empty => const LoadingIndicator(),
+              CharactersState.idle when empty => const _CharactersEmpty(),
+              CharactersState.error => const _CharactersError(),
+              _ => const CharacterList(),
+            };
+          },
+        ),
       ),
     );
   }
 }
 
-/// {@template _character_screen_empty}
+/// {@template _characters_empty}
 /// Виджет состояния отсутствия персонажей на экране [CharactersScreen].
 /// {@endtemplate}
-class _CharactersScreen$Empty extends StatelessWidget {
-  /// {@macro _character_screen_empty}
-  const _CharactersScreen$Empty();
+class _CharactersEmpty extends StatelessWidget {
+  /// {@macro _characters_empty}
+  const _CharactersEmpty();
 
   @override
   Widget build(BuildContext context) {
@@ -55,35 +57,12 @@ class _CharactersScreen$Empty extends StatelessWidget {
   }
 }
 
-/// {@template _character_screen_loading}
-/// Виджет состояния загрузки экрана [CharactersScreen].
-/// {@endtemplate}
-class _CharactersScreen$Loading extends StatelessWidget {
-  /// {@macro _character_screen_loading}
-  const _CharactersScreen$Loading();
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox.square(
-        dimension: 40,
-        child: RepaintBoundary(
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.secondary,
-            strokeWidth: 4,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// {@template _character_screen_error}
+/// {@template _characters_error}
 /// Виджет состояния ошибки экрана [CharactersScreen].
 /// {@endtemplate}
-class _CharactersScreen$Error extends StatelessWidget {
-  /// {@macro _character_screen_error}
-  const _CharactersScreen$Error();
+class _CharactersError extends StatelessWidget {
+  /// {@macro _characters_error}
+  const _CharactersError();
 
   @override
   Widget build(BuildContext context) {
