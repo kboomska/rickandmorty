@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:rickandmorty/src/common/utils/error/network_exception.dart';
 import 'package:rickandmorty/src/feature/characters/model/characters_response.dart';
 
 /// Источник данных персонажей.
@@ -39,8 +40,12 @@ final class CharactersNetworkProvider implements CharactersDataProvider {
       return CharactersResponse.fromJson(
         jsonDecode(response.body) as Map<String, Object?>,
       );
+    } else if (response.statusCode == 429) {
+      throw HttpClientException(
+        message: 'The server is overloaded\nPlease wait',
+      );
     } else {
-      throw Exception('Failed to load characters');
+      throw HttpClientException(message: 'Failed to load characters');
     }
   }
 }

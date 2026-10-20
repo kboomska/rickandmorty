@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
+import 'package:rickandmorty/src/common/utils/error/network_exception.dart';
 import 'package:rickandmorty/src/feature/characters/data/characters_repository.dart';
 import 'package:rickandmorty/src/feature/characters/logic/characters_state.dart';
 import 'package:rickandmorty/src/feature/characters/model/character.dart';
@@ -21,6 +22,9 @@ final class CharactersController {
 
   /// Список загруженных персонажей.
   final List<Character> _characters = [];
+
+  /// Сообщение об ошибке загрузки персонажей.
+  String? errorMessage;
 
   /// Текущая страница.
   int _currentPage = 0;
@@ -47,6 +51,9 @@ final class CharactersController {
     // Игнорируем новую загрузку при выполнении текущей.
     if (state.value.isLoading || _currentPage == page) return;
 
+    // Очищаем сообщение об ошибке.
+    errorMessage = null;
+
     // Отображаем экран загрузки.
     state.value = CharactersState.loading;
 
@@ -61,8 +68,14 @@ final class CharactersController {
 
       // Отображаем загруженные [T].
       state.value = CharactersState.idle;
+    } on HttpClientException catch (e) {
+      // Отображаем ошибки http клиента.
+      state.value = CharactersState.error;
+      errorMessage = e.message;
+
+      rethrow;
     } catch (_) {
-      // Отображаем ошибку загрузки.
+      // Отображаем прочие ошибки.
       state.value = CharactersState.error;
 
       rethrow;

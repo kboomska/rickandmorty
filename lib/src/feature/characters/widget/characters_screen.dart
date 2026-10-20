@@ -71,37 +71,61 @@ class _CharactersError extends StatelessWidget {
 
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .max,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Текст ошибки.
           Flexible(
-            child: Text(
-              'Something went wrong',
-              style: theme.textTheme.headlineMedium?.copyWith(
-                color: theme.colorScheme.error,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
+            fit: .tight,
+            flex: 1,
+            child: Column(
+              mainAxisSize: .max,
+              mainAxisAlignment: .end,
+              children: [
+                Text(
+                  'Oops',
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  controller.errorMessage ?? 'Something went wrong',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 4,
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 16.0),
           // Кнопка повторной загрузки.
-          TextButton.icon(
-            onPressed: controller.reload,
-            icon: const Icon(Icons.refresh),
-            style: ButtonStyle(
-              iconColor: WidgetStatePropertyAll(theme.colorScheme.onPrimary),
-              foregroundColor: WidgetStatePropertyAll(
-                theme.colorScheme.primary,
+          Flexible(
+            flex: 1,
+            child: Center(
+              child: TextButton.icon(
+                onPressed: controller.reload,
+                icon: const Icon(Icons.refresh),
+                style: ButtonStyle(
+                  iconColor: WidgetStatePropertyAll(
+                    theme.colorScheme.onPrimary,
+                  ),
+                  foregroundColor: WidgetStatePropertyAll(
+                    theme.colorScheme.primary,
+                  ),
+                  backgroundColor: WidgetStatePropertyAll(
+                    theme.colorScheme.primary,
+                  ),
+                ),
+                label: Text(
+                  'Retry',
+                  style: TextStyle(color: theme.colorScheme.onPrimary),
+                ),
               ),
-              backgroundColor: WidgetStatePropertyAll(
-                theme.colorScheme.primary,
-              ),
-            ),
-            label: Text(
-              'Retry',
-              style: TextStyle(color: theme.colorScheme.onPrimary),
             ),
           ),
         ],
