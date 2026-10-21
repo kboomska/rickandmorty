@@ -2,7 +2,7 @@ import 'dart:async' show TimeoutException;
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:rickandmorty/src/common/utils/error/network_exception.dart';
+import 'package:rickandmorty/src/common/error/network_exception.dart';
 import 'package:rickandmorty/src/feature/characters/model/characters_response.dart';
 
 /// Источник данных персонажей.
@@ -44,9 +44,11 @@ final class CharactersNetworkDataProvider implements CharactersDataProvider {
 
       if (response.statusCode != 200) {
         throw HttpClientException(
-          message: response.statusCode == 429
-              ? 'Too many requests\nPlease try again later'
-              : 'Failed to load characters',
+          message: switch (response.statusCode) {
+            404 => 'No characters found',
+            429 => 'Too many requests\nPlease try again later',
+            _ => 'Failed to load characters',
+          },
           statusCode: response.statusCode,
         );
       }

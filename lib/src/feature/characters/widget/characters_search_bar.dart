@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/src/common/utils/debouncer.dart';
 import 'package:rickandmorty/src/feature/characters/logic/characters_controller.dart';
 import 'package:rickandmorty/src/feature/characters/widget/characters_provider.dart';
 
@@ -20,22 +21,28 @@ class _CharactersSearchBarState extends State<CharactersSearchBar> {
   // Контроллер управления строкой поиска персонажей.
   late final TextEditingController textController;
 
+  // Контроллер управления задержкой выполнения запросов при поиске персонажа.
+  late final Debouncer debounce;
+
   @override
   void initState() {
     controller = CharactersProvider.of(context);
     textController = TextEditingController();
+    debounce = Debouncer(milliseconds: 600);
     textController.addListener(searchListener);
     super.initState();
   }
 
   // Слушатель изменений в поле поиска.
-  Future<void> searchListener() async {
-    await controller.search(textController.text);
+  void searchListener() {
+    // Выполнение поиска персонажа по имени после задержки.
+    debounce.run(() => controller.search(textController.text.trim()));
   }
 
   @override
   void dispose() {
     textController.removeListener(searchListener);
+    debounce.dispose();
     textController.dispose();
     super.dispose();
   }

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/widgets.dart';
-import 'package:rickandmorty/src/common/utils/error/network_exception.dart';
+import 'package:rickandmorty/src/common/error/network_exception.dart';
 import 'package:rickandmorty/src/feature/characters/data/characters_repository.dart';
 import 'package:rickandmorty/src/feature/characters/logic/characters_state.dart';
 import 'package:rickandmorty/src/feature/characters/model/character.dart';
@@ -62,7 +62,7 @@ final class CharactersController {
   /// будут загружены все персонажи.
   Future<void> load({required int page, String search = ''}) async {
     // Игнорируем новую загрузку при выполнении текущей.
-    if (state.value.isLoading) return; // || _currentPage == page) return;
+    if (state.value.isLoading) return;
 
     // Очищаем сообщение об ошибке.
     _errorMessage = null;
@@ -74,7 +74,7 @@ final class CharactersController {
       // Загрузка данных персонажей.
       final response = await repository.getCharacters(
         page.clamp(1, _totalPages),
-        _lastSearch,
+        search,
       );
       _characters.addAll(response.results);
       _totalPages = response.info.pages;
