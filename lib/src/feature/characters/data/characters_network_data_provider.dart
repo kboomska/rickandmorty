@@ -7,8 +7,8 @@ import 'package:rickandmorty/src/feature/characters/model/characters_response.da
 
 /// Источник данных персонажей.
 abstract interface class CharactersDataProvider {
-  /// Получение персонажей из источника данных.
-  Future<CharactersResponse> getCharacters(int page);
+  /// Метод получения данных персонажей.
+  Future<CharactersResponse> getCharacters(int page, String name);
 }
 
 /// {@template characters_network_data_provider}
@@ -30,12 +30,16 @@ final class CharactersNetworkDataProvider implements CharactersDataProvider {
   /// Базовый URL источника данных персонажей.
   final String baseUrl;
 
-  /// Загрузка персонажей из сети.
+  /// Загрузка данных персонажей через http.
+  ///
+  /// Метод принимает номер страницы [page], а также имя (часть имени) [name]
+  /// для поиска конкретного персонажа. В случае, если [name] будет пустым,
+  /// будут загружены все персонажи.
   @override
-  Future<CharactersResponse> getCharacters(int page) async {
+  Future<CharactersResponse> getCharacters(int page, String name) async {
     try {
       final response = await client
-          .get(Uri.parse('$baseUrl/character/?page=$page'))
+          .get(Uri.parse('$baseUrl/character/?page=$page&name=$name'))
           .timeout(_timeLimit);
 
       if (response.statusCode != 200) {

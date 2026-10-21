@@ -18,11 +18,11 @@ class CharacterList extends StatefulWidget {
 }
 
 class _CharacterListState extends State<CharacterList> {
-  // Контроллер прокрутки экрана персонажей.
-  late final ScrollController scrollController;
-
   // Контроллер управления загрузкой персонажей.
   late final CharactersController controller;
+
+  // Контроллер прокрутки экрана персонажей.
+  late final ScrollController scrollController;
 
   @override
   void initState() {

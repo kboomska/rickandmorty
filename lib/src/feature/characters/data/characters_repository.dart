@@ -3,8 +3,8 @@ import 'package:rickandmorty/src/feature/characters/model/characters_response.da
 
 /// Репозиторий доступа к данным персонажей.
 abstract interface class CharactersRepository {
-  /// Получение персонажей из источника данных.
-  Future<CharactersResponse> getCharacters(int page);
+  /// Метод получения данных персонажей.
+  Future<CharactersResponse> getCharacters(int page, String name);
 }
 
 /// {@template characters_repository_impl}
@@ -17,8 +17,12 @@ final class CharactersRepositoryImpl implements CharactersRepository {
   /// Источник данных персонажей.
   final CharactersDataProvider dataProvider;
 
-  /// Получение персонажей.
+  /// Получение данных персонажей.
+  ///
+  /// Метод принимает номер страницы [page], а также имя (часть имени) [name]
+  /// для поиска конкретного персонажа. В случае, если [name] будет пустым,
+  /// будут загружены все персонажи.
   @override
-  Future<CharactersResponse> getCharacters(int page) =>
-      dataProvider.getCharacters(page);
+  Future<CharactersResponse> getCharacters(int page, String name) =>
+      dataProvider.getCharacters(page, name);
 }

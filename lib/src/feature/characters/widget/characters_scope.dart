@@ -44,7 +44,7 @@ class _CharactersScopeState extends State<CharactersScope> {
   Widget build(BuildContext context) {
     return CharactersProvider(
       // Передаем контроллер и сразу загружаем список персонажей.
-      controller: controller..load(1),
+      controller: controller..load(page: 1),
       child: widget.child,
     );
   }

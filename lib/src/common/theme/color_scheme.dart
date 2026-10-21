@@ -8,4 +8,5 @@ const colorScheme = ColorScheme.dark(
   error: Color(0xFFFC8E8F),
   onPrimary: Color(0xFFFFFFFF),
   onSecondary: Color(0xFFFFFFFF),
+  onSurfaceVariant: Color(0x7F026065),
 );

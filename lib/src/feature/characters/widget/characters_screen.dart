@@ -3,6 +3,7 @@ import 'package:rickandmorty/src/common/widget/loading_indicator.dart';
 import 'package:rickandmorty/src/feature/characters/logic/characters_state.dart';
 import 'package:rickandmorty/src/feature/characters/widget/character_list.dart';
 import 'package:rickandmorty/src/feature/characters/widget/characters_provider.dart';
+import 'package:rickandmorty/src/feature/characters/widget/characters_search_bar.dart';
 
 /// {@template characters_screen}
 /// Виджет экрана персонажей.
@@ -16,7 +17,7 @@ class CharactersScreen extends StatelessWidget {
     final controller = CharactersProvider.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('Characters')),
+      appBar: AppBar(title: const CharactersSearchBar()),
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: ValueListenableBuilder(
