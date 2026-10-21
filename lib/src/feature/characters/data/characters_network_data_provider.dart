@@ -1,3 +1,4 @@
+import 'dart:async' show TimeoutException;
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -10,12 +11,12 @@ abstract interface class CharactersDataProvider {
   Future<CharactersResponse> getCharacters(int page);
 }
 
-/// {@template characters_network_provider}
+/// {@template characters_network_data_provider}
 /// Поставщик данных персонажей из сети.
 /// {@endtemplate}
-final class CharactersNetworkProvider implements CharactersDataProvider {
-  /// {@macro characters_network_provider}
-  const CharactersNetworkProvider({
+final class CharactersNetworkDataProvider implements CharactersDataProvider {
+  /// {@macro characters_network_data_provider}
+  const CharactersNetworkDataProvider({
     required this.client,
     required this.baseUrl,
   });
@@ -32,20 +33,31 @@ final class CharactersNetworkProvider implements CharactersDataProvider {
   /// Загрузка персонажей из сети.
   @override
   Future<CharactersResponse> getCharacters(int page) async {
-    final response = await client
-        .get(Uri.parse('$baseUrl/character/?page=$page'))
-        .timeout(_timeLimit);
+    try {
+      final response = await client
+          .get(Uri.parse('$baseUrl/character/?page=$page'))
+          .timeout(_timeLimit);
 
-    if (response.statusCode == 200) {
+      if (response.statusCode != 200) {
+        throw HttpClientException(
+          message: response.statusCode == 429
+              ? 'Too many requests\nPlease try again later'
+              : 'Failed to load characters',
+          statusCode: response.statusCode,
+        );
+      }
+
       return CharactersResponse.fromJson(
         jsonDecode(response.body) as Map<String, Object?>,
       );
-    } else if (response.statusCode == 429) {
+    } on http.ClientException {
+      // Для Web сюда могут попадать исключения связанные с 429,
+      // но заблокированные браузером из-за CORS.
       throw HttpClientException(
-        message: 'The server is overloaded\nPlease wait',
+        message: 'Unable to complete the request\nPlease try again later',
       );
-    } else {
-      throw HttpClientException(message: 'Failed to load characters');
+    } on TimeoutException {
+      throw HttpClientException(message: 'Server request timed out');
     }
   }
 }

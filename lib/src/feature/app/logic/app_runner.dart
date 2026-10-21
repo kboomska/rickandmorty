@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:rickandmorty/src/feature/app/widget/app.dart';
-import 'package:rickandmorty/src/feature/characters/data/characters_network_provider.dart';
+import 'package:rickandmorty/src/feature/characters/data/characters_network_data_provider.dart';
 import 'package:rickandmorty/src/feature/characters/data/characters_repository.dart';
 
 /// {@template app_runner}
@@ -23,7 +23,7 @@ final class AppRunner {
     // доступа к данным персонажей. Вместо условного Dependencies передаем
     // данный репозиторий напрямую.
     final charactersRepository = CharactersRepositoryImpl(
-      dataProvider: CharactersNetworkProvider(
+      dataProvider: CharactersNetworkDataProvider(
         client: http.Client(),
         baseUrl: const String.fromEnvironment('BASE_URL'),
       ),
@@ -31,7 +31,7 @@ final class AppRunner {
 
     runApp(App(repository: charactersRepository));
 
-    // Закрываем заставку (splash screen) и отображаем экран приложения.
+    // Закрываем заставку (splash screen) и отображаем первый кадр приложения.
     SchedulerBinding.instance.addPostFrameCallback((_) {
       binding.allowFirstFrame();
     });

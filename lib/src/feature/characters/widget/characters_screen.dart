@@ -92,7 +92,7 @@ class _CharactersError extends StatelessWidget {
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  controller.errorMessage ?? 'Something went wrong',
+                  controller.errorMessage,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onPrimary,
                   ),

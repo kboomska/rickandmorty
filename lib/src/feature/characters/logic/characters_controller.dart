@@ -23,9 +23,6 @@ final class CharactersController {
   /// Список загруженных персонажей.
   final List<Character> _characters = [];
 
-  /// Сообщение об ошибке загрузки персонажей.
-  String? errorMessage;
-
   /// Текущая страница.
   int _currentPage = 0;
 
@@ -34,6 +31,12 @@ final class CharactersController {
 
   /// Начальная позиция прокрутки списка персонажей.
   double scrollPosition = 0.0;
+
+  /// Сообщение об ошибке загрузки персонажей.
+  String? _errorMessage;
+
+  /// Сообщение об ошибке загрузки персонажей.
+  String get errorMessage => _errorMessage ?? 'Something went wrong';
 
   /// Наличие незагруженных страниц.
   bool get hasMorePages => _currentPage < _totalPages;
@@ -52,7 +55,7 @@ final class CharactersController {
     if (state.value.isLoading || _currentPage == page) return;
 
     // Очищаем сообщение об ошибке.
-    errorMessage = null;
+    _errorMessage = null;
 
     // Отображаем экран загрузки.
     state.value = CharactersState.loading;
@@ -71,7 +74,7 @@ final class CharactersController {
     } on HttpClientException catch (e) {
       // Отображаем ошибки http клиента.
       state.value = CharactersState.error;
-      errorMessage = e.message;
+      _errorMessage = e.message;
 
       rethrow;
     } catch (_) {

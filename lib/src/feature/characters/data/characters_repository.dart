@@ -1,4 +1,4 @@
-import 'package:rickandmorty/src/feature/characters/data/characters_network_provider.dart';
+import 'package:rickandmorty/src/feature/characters/data/characters_network_data_provider.dart';
 import 'package:rickandmorty/src/feature/characters/model/characters_response.dart';
 
 /// Репозиторий доступа к данным персонажей.
