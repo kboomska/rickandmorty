@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/src/feature/character/widget/character_image.dart';
 import 'package:rickandmorty/src/feature/characters/model/character.dart';
 
 /// {@template character_card}
@@ -18,26 +19,17 @@ class CharacterCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.secondary,
-        border: Border.all(color: theme.colorScheme.secondary, width: 1),
+        border: Border.all(color: theme.colorScheme.secondary, width: 1.0),
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           crossAxisAlignment: .center,
           children: [
             // Изображение персонажа.
-            Image.network(
-              character.image,
-              height: 80,
-              width: 80,
-              errorBuilder: (_, _, _) => Image.asset(
-                "assets/images/empty.webp",
-                height: 80,
-                width: 80,
-              ),
-            ),
-            const SizedBox.square(dimension: 16),
+            CharacterImage(imageUrl: character.image, dimension: 80.0),
+            const SizedBox.square(dimension: 16.0),
             // Данные персонажа.
             Flexible(
               fit: .tight,
@@ -53,7 +45,7 @@ class CharacterCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 8.0),
                   DecoratedBox(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary,
@@ -61,8 +53,8 @@ class CharacterCard extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 1,
+                        horizontal: 8.0,
+                        vertical: 1.0,
                       ),
                       child: Text(
                         character.status.upperName,
@@ -75,6 +67,7 @@ class CharacterCard extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 16.0),
             Icon(Icons.arrow_forward_ios, color: theme.colorScheme.onPrimary),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmorty/src/feature/character/widget/character_image.dart';
 import 'package:rickandmorty/src/feature/characters/model/character.dart';
 
 /// {@template character_details_screen}
@@ -24,20 +25,7 @@ class CharacterDetailsScreen extends StatelessWidget {
           crossAxisAlignment: .center,
           children: [
             // Изображение персонажа.
-            Flexible(
-              child: Image.network(
-                character.image,
-                height: 240,
-                width: double.infinity,
-                fit: .fitWidth,
-                errorBuilder: (_, _, _) => Image.asset(
-                  "assets/images/empty.webp",
-                  height: 240,
-                  width: double.infinity,
-                  fit: .fitWidth,
-                ),
-              ),
-            ),
+            Flexible(child: CharacterImage(imageUrl: character.image)),
             const SizedBox(height: 8.0),
             // Описание персонажа.
             Expanded(
